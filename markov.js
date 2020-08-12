@@ -7,11 +7,10 @@ class MarkovMachine {
 
   constructor(text) {
     let words = text.split(/[ \r\n]+/);
-    // MORE CODE HERE
     let markovChain = this.makeChains(words)
     this.markovChain = markovChain
     this.words = words
-    // console.log(markovChain)
+    // console.log(this.getText())
   }
 
   /** set markov chains:
@@ -20,8 +19,6 @@ class MarkovMachine {
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
   makeChains(words) {
-    // MORE CODE HERE
-    //loop over words
     let mChains = {}
     for (let i=0; i < words.length; i++){
       if (words[i+1] === undefined) {
@@ -47,18 +44,31 @@ class MarkovMachine {
   /** return random text from chains */
 
   getText(numWords = 100) {
-    for (let i =0; i < 100; i++){
+    let currentWord = ''
+    let text = ''
+    let newWord = ''
 
+    for (let i =0; i < numWords; i++){
+      if (i === 0){
+        currentWord = this.words[0]
+        // console.log('@&#^$%#*&^$%#@*&^$%#@$', this.words[0])
+        text = currentWord + ' '//Add seed word to text
+      }
+      //new word
+      console.log(this.markovChain)
+      console.log('Loop #: ' + i + ', currentWord: ' + currentWord + ' \n' )
+       console.log(this.markovChain['project'])
+      newWord = this.markovChain[currentWord][Math.floor(Math.random()*this.markovChain[currentWord].length)]
+      while (newWord === null){
+        newWord = this.markovChain[currentWord][Math.floor(Math.random()*this.markovChain[currentWord].length)]
+      }
+      text += newWord + ' '
+      currentWord = newWord
     }
-
-    // for (let key in this.markovChain){
-    //   let randNum = Math.floor(Math.random()*this.markovChain[key].length)
-    //   //for a given key, grab the random number from the key's array
-    //   //loop over this until i = 100
-    // }
+    console.log(text)
   }
 }
 
-let mm = new MarkovMachine('the cat in the cat')
-
-// console.log(mm.markovChain);
+module.exports = {
+  MarkovMachine: MarkovMachine
+}
